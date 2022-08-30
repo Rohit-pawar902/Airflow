@@ -1,0 +1,15 @@
+https://github.com/AyanF/NiFi-flows/blob/master/Webhook_Listener_Hmac.xml
+
+Problem Statement -
+Use Case - 
+Create a web hook listener in NiFi
+
+Solution - 
+Find ways to interact with Web hook from NiFi
+Study working of web hooks to create a compatible endpoint
+Explore HMAC handling and authentication in NiFi
+Implement a sample use case of HMAC in NiFi
+Create end point in NiFi
+Stimulate Shopify Web hook using Postman and run a trial case
+
+All the steps are accomplished, NiFi template us uploaded at - 
