@@ -1,0 +1,52 @@
+Problem Statement - 
+Implement different use cases in AirFlow
+
+Use Case 1 : 
+Create DAG in Airflow to inform application to create a file, upon successful generation of file communicate the success message to Airflow so that next task of reading the file can be done
+
+Use Case 2 :
+Create a workflow in Airflow. 
+The workflow will receive the following inputs - Rule Ids, parameters & frequency in a sequence.
+It should execute these rules in the particular sequence and let OFBiz know when the rules are executed. 
+
+Use Case 2.1:
+Run some rules daily and others rules on the fly, the sequence of rules to run is fixed for daily rules but can be changed when needed, the sequence for one time rules will be supplied with rules only. 
+
+Solution - 
+
+Case 1 :
+Create three tasks to generate file, check for file and call service.
+Make liner dependencies.   
+
+Case 2 : 
+Workflow breakdown - 
+Airflow receives parameters
+DAG 1 - Task 1 receives params, writes them into JSON file and DAG 1 -Task 2 triggers DAG 2  
+DAG 2 - Task 1 reads the JSON finds pending rule, DAG 2 - Task 2 calls OFBiz api to execute the rule
+OFBiz service makes a post request to trigger Airflow DAG 3
+DAG 3 - Task 1 updates the rule status and  DAG 3 - Task 2 triggers DAG 2 again
+Process repeats unitl all rules have been executed
+
+Case 2.1 :
+The workflow will have two main dags, one runs with schedule interval of daily and other runs when triggered,
+Both will contain sequences in one JSON file and Rules in another JSON file. Some more DAGs are needed will add them as I progress through the task.
+
+
+Logic building and foundational requirements - 
+Send Post request (params included) with Postman to trigger a rule
+Send Get request from Postman to get status of triggered service using FindJob api 
+Convert epoch time to (YYYY-MM-DD HR:MIN:SEC.000) format
+Create task 1 to read data from incoming DAG trigger request
+Create a task to send post request to OFBiz
+ Create a task to get status of scheduled service 
+
+DAG 1 - read_rules2
+DAG 2 - execute_rules2
+DAG 3 - update_rules
+
+The tasks are uploaded in the following repository - 
+
+
+
+
+
