@@ -1,0 +1,56 @@
+Problem Statement
+Explore file conversion  & handling with Apache NiFi and integrate it with Airflow
+A KeyStore holds your application’s certificates.
+Install & Setup NiFi
+Create sample processors and run
+
+Use Case 1 - 
+Get data from api end point and store it on the hard disk, upon successful completion of this process inform Airflow. 
+
+Use Case 2 - 
+Create a NiFi listener to receive api requests 
+Process data received in requests
+Make Http request to relevant api 
+Return the response back to original source
+
+Use Case 3 - 
+Explore and apply authentication for incoming requests in Apache NiFi.
+
+Use Case 4 -  
+Implement a web hook listener in NiFi. 
+
+Use Case 5 -
+xImplement use of variables in places of dynamic fields (username, password, locations) to enable generic use of templates.
+
+Solution - 
+Case 1 
+The case is successfully implemented using the following processors - InvokeHttp & PutFile Processor .
+
+NiFi template is uploaded at - 
+
+Case 2 
+Created a listener using HandleHttpRequest processor to receive api calls on NiFi, data received here can be altered with any suitable processor, InvokeHttp Processor makes a call to Hotwax api with processed data and gets the response, this response is given back to initial client by capturing it in attribute and injecting into Handle Http Response
+
+The NiFi template is uploaded here - 
+ 
+
+Case 3  
+Applied username/password authentication in NiFi using Http headers, same can be done for Basic Auth as well.
+Receiving http headers in HttpHandleRequest processor and verifying them against stored credentials using RouteOnAttribute Processor and redirecting to relevant response using HandleHttpResponse.
+
+NiFi template is uploaded at - 
+
+
+
+Case 4  
+Created a endpoint for web hooks to interact with using HttpHandleRequest processor, Next in the flow is ExecuteStreamProcessor which execute a python script to generate Hmac signature while taking parameters (secret key, apikey) dynamically, it forwards the result to RouteOnAttribute Processor which matches both the hmacs and verifies them and routes the output to relevant response using various relationships with HandleHttpResponse Processor.
+
+The template is uploaded at - 
+  
+Use Case 5 - 
+Implemented using NiFi variables to replace get file and put file locations for this use case.
+
+Documentation for reference -  https://docs.cloudera.com/HDPDocuments/HDF3/HDF-3.1.0/bk_user-guide/content/creating-a-variable.html
+
+The template is uploaded at - 
+
